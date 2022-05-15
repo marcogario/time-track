@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>TimeTracker</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Activity.fs" />
+    <Compile Include="Log.fs" />
+    <Compile Include="Store.fs" />
+    <Compile Include="Report.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FSharp.Data" Version="4.2.7" />
+  </ItemGroup>
+</Project>
