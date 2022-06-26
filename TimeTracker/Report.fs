@@ -15,15 +15,10 @@ type Report =
       TotalTime: System.TimeSpan }
 
 module Report =
-    let ensureClosedLogNow log =
-        match log with
-        | Active log -> log |> Log.endCurrentActivity System.DateTime.Now
-        | Closed log -> log
-
     let combineTwoLogs logA logB =
-        let clogA = logA |> ensureClosedLogNow
-        let clogB = logB |> ensureClosedLogNow
-        let allActivities = clogA.Past @ clogB.Past
+        let activitiesA = Log.Past logA
+        let activitiesB = Log.Past logB
+        let allActivities = activitiesA @ activitiesB
         // NOTE: We sort the activities to make it easier to filter across periods of time.
         // It also is a nice property that the Log is sorted.
         // However, since we combine two arbitrary logs, we might end up with
