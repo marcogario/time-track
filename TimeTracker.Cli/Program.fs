@@ -67,15 +67,26 @@ module Cli =
             printf "Total: %s\n" ((Log.TotalTime log).ToString("hh\\:mm"))
             None)
 
+    // warnActiveLog prints a warning if the log is Active
+    let warnActiveLog (log:Log) =
+        match log with
+        // TODO: This is reconstructing the file path, but maybe we could fetch those with the logs?
+        | Active l -> printf "Warn: Active log: %s\n" (l.Current.Start.Date |> logPath)
+        | Closed _ -> ()
+
+
     let reportCmd () =
         let printTotal logs =
             let report = Report.weekReport timeNow logs
             let total = report.TotalTime
             printf "Weekly Total: %s\n" (total.ToString("hh\\:mm"))
 
+
+
         match loadAllLogs STORE_DIR with
         | Ok logs ->
             Ok(
+                logs |> List.map warnActiveLog  |> ignore
                 printTotal logs
                 Log.Empty
             )
