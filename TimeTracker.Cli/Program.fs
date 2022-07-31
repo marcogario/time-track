@@ -4,6 +4,7 @@ open TimeTracker.Storage
 open TimeTracker.Core
 
 module Cli =
+    open System.Diagnostics
 
     let DEFAULT_STORE_DIR =
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".tt")
@@ -74,14 +75,11 @@ module Cli =
         | Active l -> printf "Warn: Active log: %s\n" (l.Current.Start.Date |> logPath)
         | Closed _ -> ()
 
-
     let reportCmd () =
         let printTotal logs =
             let report = Report.weekReport timeNow logs
             let total = report.TotalTime
             printf "Weekly Total: %.0f:%d\n" total.TotalHours total.Minutes
-
-
 
         match loadAllLogs STORE_DIR with
         | Ok logs ->
@@ -92,7 +90,12 @@ module Cli =
             )
         | Error e -> Error e
 
-
+    let amendCmd() =
+        let mutable p = new Process()
+        p.StartInfo.FileName <- todayLog
+        p.StartInfo.UseShellExecute <- true
+        p.Start() |> ignore
+        Ok (Log.Empty)
 
 let errorCheck =
     function
@@ -110,7 +113,8 @@ let main args =
         | "end" -> Cli.endCmd ()
         | "show" -> Cli.showCmd ()
         | "report" -> Cli.reportCmd ()
-        | _ -> Error "Must provide one of start|end|show|report"
+        | "amend" -> Cli.amendCmd ()
+        | _ -> Error "Must provide one of start|end|show|report|amend"
     else
         Cli.showCmd ()
     |> errorCheck
