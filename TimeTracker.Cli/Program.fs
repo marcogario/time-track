@@ -79,7 +79,7 @@ module Cli =
         let printTotal logs =
             let report = Report.weekReport timeNow logs
             let total = report.TotalTime
-            printf "Weekly Total: %s\n" (total.ToString("hh\\:mm"))
+            printf "Weekly Total: %.0f:%d\n" total.TotalHours total.Minutes
 
 
 
