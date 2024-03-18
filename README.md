@@ -82,3 +82,7 @@ start               , end                 , description
 
 NOTE: There are a few ambiguities around CSV and delimiters that tend to be implementation dependent (how to represent line breaks, quotes etc.) As our descriptions are meant to be rather simple, we are not going to worry about them for now.
 
+## Installation
+
+* SDK 6.0 (`sudo apt install dotnet-sdk-6.0`)
+* Build the release: `dotnet build --configuration Release`
